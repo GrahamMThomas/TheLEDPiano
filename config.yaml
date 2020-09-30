@@ -1,0 +1,13 @@
+---
+colors:
+  default: "#ffffff"
+  left: "#00ccff"
+  left_black: "#0000ff"
+  right: "#00ff48"
+  right_black: "#00ff00"
+  error: "#ff0000"
+pixel_count: 175
+brightness: 0.02
+devices:
+  piano: Clavinova
+  synthesia: Pi Midi Controller and Visualizer
