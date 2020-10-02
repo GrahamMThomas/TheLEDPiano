@@ -43,3 +43,10 @@ class LightStrip:
 
         self.pixels[pos] = (0, 0, 0)
         self.synthesia_pixels[pos] = (0, 0, 0)
+
+    def start_synthesia_song(self):
+        self.in_song = True
+
+    def end_synthesia_song(self):
+        self.synthesia_pixels = [(0, 0, 0) for _ in range(AppConfig.instance().conf["pixel_count"])]
+        self.in_song = False

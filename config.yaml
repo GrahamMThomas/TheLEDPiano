@@ -7,7 +7,7 @@ colors:
   right_black: "#00ff00"
   error: "#ff0000"
 pixel_count: 175
-brightness: 0.02
+brightness: 0.15
 devices:
   piano: Clavinova
   synthesia: Pi Midi Controller and Visualizer

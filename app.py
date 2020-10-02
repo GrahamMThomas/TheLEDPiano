@@ -6,6 +6,7 @@ from lib.midi_device import MidiDevice
 from helpers.functions import hex_to_rgb
 
 CONFIG = AppConfig.instance().conf
+
 synthesia = MidiDevice(CONFIG["devices"]["synthesia"])
 piano = MidiDevice(CONFIG["devices"]["piano"])
 
@@ -32,14 +33,17 @@ print("Started Piano Visualizer by CwakrJax!")
 print("-" * 30)
 
 while True:
-    for raw_msg in synthesia.midi.iter_pending():
+    if not synthesia.connected():
+        light_strip.end_synthesia_song()
+
+    for raw_msg in synthesia.iter_pending():
         if raw_msg.type not in ["note_on", "note_off"]:
-            light_strip.in_song = False
+            light_strip.end_synthesia_song()
             continue
         else:
             if not light_strip.in_song:
                 print("Synthesia Interaction Detected...")
-            light_strip.in_song = True
+            light_strip.start_synthesia_song()
 
         msg = MidiMessage(raw_msg, from_synthesia=True)
         print(msg)
@@ -49,7 +53,7 @@ while True:
         elif raw_msg.type == "note_off":
             light_strip.off_led(msg)
 
-    for raw_msg in piano.midi.iter_pending():
+    for raw_msg in piano.iter_pending():
         if raw_msg.type not in ["note_on", "note_off"]:
             continue
         msg = MidiMessage(raw_msg)
