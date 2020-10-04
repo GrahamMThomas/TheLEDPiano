@@ -4,13 +4,16 @@ from lib.app_config import AppConfig
 from lib.light_strip import LightStrip
 from lib.midi_device import MidiDevice
 from helpers.functions import hex_to_rgb
+from lib.lcd_manager import LcdManager
 
 CONFIG = AppConfig.instance().conf
+lcd_manager = LcdManager.instance()
 
 synthesia = MidiDevice(CONFIG["devices"]["synthesia"])
 piano = MidiDevice(CONFIG["devices"]["piano"])
 
 light_strip = LightStrip.instance()
+light_strip.play_boot_sequence()
 
 
 def play_note(msg):

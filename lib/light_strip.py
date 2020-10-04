@@ -3,6 +3,7 @@ import neopixel
 from helpers.singleton import Singleton
 from lib.app_config import AppConfig
 from helpers.functions import hex_to_rgb
+from time import sleep
 
 
 @Singleton
@@ -50,3 +51,10 @@ class LightStrip:
     def end_synthesia_song(self):
         self.synthesia_pixels = [(0, 0, 0) for _ in range(AppConfig.instance().conf["pixel_count"])]
         self.in_song = False
+
+    def play_boot_sequence(self):
+        # trail_len = 10
+        for x in range(len(self.pixels)):
+            self.pixels[x] = (255, 255, 255)
+            sleep(0.01)
+        self.pixels.fill((0, 0, 0))
