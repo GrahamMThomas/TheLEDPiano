@@ -1,0 +1,2 @@
+ACTION=="remove", SUBSYSTEM=="usb", RUN+="/home/pi/TheLEDPiano/bin/remove_usb.sh"
+ACTION=="add", SUBSYSTEM=="usb", RUN+="/home/pi/TheLEDPiano/bin/add_usb.py"
