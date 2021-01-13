@@ -11,4 +11,4 @@ brightness: 0.15
 invert: true
 devices:
   piano: Clavinova
-  synthesia: Pi Midi Controller and Visualizer
+  synthesia: Maelstrom

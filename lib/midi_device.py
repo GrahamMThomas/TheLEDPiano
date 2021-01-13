@@ -46,7 +46,7 @@ class MidiDevice:
                 raise LookupError(f"Found multiple devices with the substring {port_substring}")
 
             elif len(matching_ports) == 1 and self.port is None:
-                self.port_name = matching_ports[0]
+                self.port_name = matching_ports[0].strip()
                 print(f"Connected to {self.port_name}")
                 self.port = mido.open_input(self.port_name)
 
