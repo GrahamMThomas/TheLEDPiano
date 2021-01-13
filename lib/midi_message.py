@@ -1,5 +1,5 @@
 import re
-
+from lib.app_config import AppConfig
 
 class MidiMessage:
     def __init__(self, msg, from_synthesia=False):
@@ -24,7 +24,11 @@ class MidiMessage:
         else:
             note_offset = 0
 
-        return (self.note - 20) * 2 - note_offset
+        pos = (self.note - 20) * 2 - note_offset
+        if AppConfig.instance().conf['invert']:
+            pos = AppConfig.instance().conf.get('pixel_count') - pos
+
+        return pos
 
     def is_right_hand(self):
         return self.channel == "12"
