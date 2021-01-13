@@ -49,6 +49,14 @@ sudo service udev restart
 5. Open synthesia and make sure they are connected
 - Set Key light to "Finger-Based" channel
 
+6. Configure to run on boot
+```sh
+sudo cp pianoled.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/pianoled.service
+sudo systemctl daemon-reload
+sudo systemctl enable pianoled.service
+sudo reboot
+```
 
 <!-- ROADMAP -->
 
