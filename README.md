@@ -1,71 +1,10 @@
-<!--
-*** Thanks for checking out this README Template. If you have a suggestion that would
-*** make this better, please fork the repo and create a pull request or simply open
-*** an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
-***
-***
-***
-*** To avoid retyping too much info. Do a search and replace for the following:
-*** GrahamMThomas, TheLEDPiano, CwakrJax, grahamthethomas@gmail.com
--->
+<img src="assets/images/square_logo.png" align="right" height="144px" />
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
+# The LED Piano &nbsp; 
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+> "I Shorten Things" is a bit.ly clone I used to practice building a full stack application from the ground up.
 
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://github.com/GrahamMThomas/TheLEDPiano">
-    <img src="assets/images/square_logo.png" alt="Logo" width="128" height="128">
-  </a>
-
-  <h3 align="center">The LED Piano</h3>
-
-  <p align="center">
-    Raspberry Pi zero and Light strips are used to achieve an awesome light up effect on your piano. Connect with <a href="https://synthesiagame.com/">Synthesia</a> to help you learn new songs by lighting up the correct notes to play.
-    <br />
-    <a href="https://github.com/GrahamMThomas/TheLEDPiano"><strong>Explore the docs (Github)»</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/GrahamMThomas/TheLEDPiano">View Demo</a>
-    ·
-    <a href="https://github.com/GrahamMThomas/TheLEDPiano/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/GrahamMThomas/TheLEDPiano/issues">Request Feature</a>
-  </p>
-</p>
-
-<!-- TABLE OF CONTENTS -->
-
-## Table of Contents
-
-- [About the Project](#about-the-project)
-  - [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
-
-<!-- ABOUT THE PROJECT -->
+To access the app, go to https://app.ishortenthings.com:
 
 ## About The Project
 
@@ -80,22 +19,6 @@ Main reason I chose to rewrite it from scratch was:
 - Make it more hands off. Plug it in and connect. The project handles reconnections of devices seemlessly so no more sshing to get things to work.
 - Overall productionalizing that I felt the original repo was missing
 
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-To get a local copy up and running follow these simple steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-
-- npm
-
-```sh
-npm install npm@latest -g
-```
-
 ### Installation
 
 1. Clone the repo
@@ -104,19 +27,65 @@ npm install npm@latest -g
 git clone https://github.com/GrahamMThomas/TheLEDPiano.git
 ```
 
-2. Install NPM packages
+2. Install required packages
 
 ```sh
-npm install
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-<!-- USAGE EXAMPLES -->
+3. Add midiusb.rules file
 
-## Usage
+```sh
+cp 33-midiusb.rules /etc/udev/rules.d/33-midiusb.rules
+sudo udevadm control --reload
+sudo service udev restart
+```
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+4. Install [rtpmidi](https://www.tobias-erichsen.de/software/rtpmidi.html)
+- Run and create a session. Name it whatever you want. Enable it. Ignore Bonjour errors
+- Create a new Remote Peer (+ sign under directory). Chuck your PI address and use 5004 as the port
+- Click connect and then turn on your piano (You have to reconnect rtpmidi everytime the piano turns off)
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+5. Open synthesia and make sure they are connected
+- Set Key light to "Finger-Based" channel
+
+6. Get Device names and add to `config.yaml`
+```sh
+aconnect -l
+```
+
+Example Output:
+```
+client 0: 'System' [type=kernel]
+    0 'Timer           '
+    1 'Announce        '
+client 14: 'Midi Through' [type=kernel]
+    0 'Midi Through Port-0'
+client 20: 'Clavinova' [type=kernel,card=1]
+    0 'Clavinova MIDI 1'
+        Connecting To: 128:1
+        Connected From: 128:1
+client 128: 'rtpmidi raspberrypi' [type=user,pid=1459]
+    0 'Network         '
+    1 'Maelstrom       '
+        Connecting To: 20:0
+        Connected From: 20:0
+```
+
+Here your piano device name is `Clavinova MIDI 1` and synthesia is `Maelstrom`. Put these values into the config.yaml
+
+7. Configure to run on boot
+```sh
+sudo cp pianoled.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/pianoled.service
+sudo systemctl daemon-reload
+sudo systemctl enable pianoled.service
+sudo reboot
+```
+
+
 
 <!-- ROADMAP -->
 
@@ -146,7 +115,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@CwakrJax](https://twitter.com/CwakrJax) - grahamthethomas@gmail.com
+Graham Thomas - [@CwakrJax](https://twitter.com/CwakrJax) - grahamthethomas@gmail.com
 
 Project Link: [https://github.com/GrahamMThomas/TheLEDPiano](https://github.com/GrahamMThomas/TheLEDPiano)
 
@@ -156,19 +125,3 @@ Project Link: [https://github.com/GrahamMThomas/TheLEDPiano](https://github.com/
 
 - [Onlaj's Piano LED Visualizer](https://github.com/onlaj/Piano-LED-Visualizer)
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/GrahamMThomas/repo.svg?style=flat-square
-[contributors-url]: https://github.com/GrahamMThomas/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/GrahamMThomas/repo.svg?style=flat-square
-[forks-url]: https://github.com/GrahamMThomas/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/GrahamMThomas/repo.svg?style=flat-square
-[stars-url]: https://github.com/GrahamMThomas/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/GrahamMThomas/repo.svg?style=flat-square
-[issues-url]: https://github.com/GrahamMThomas/repo/issues
-[license-shield]: https://img.shields.io/github/license/GrahamMThomas/repo.svg?style=flat-square
-[license-url]: https://github.com/GrahamMThomas/repo/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/GrahamMThomas
-[product-screenshot]: images/screenshot.png
