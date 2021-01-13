@@ -5,7 +5,7 @@ Conflicts=getty@tty1.service
 
 [Service]
 Type=simple
-ExecStart=/home/pi/piano-led-visualizer-3/venv/bin/python3 /home/pi/piano-led-visualizer-3/app.py > /var/log/piano-led-visualizer-3.log 2>&1
+ExecStart=/usr/bin/python3 /home/pi/TheLEDPiano/app.py > /var/log/TheLEDPiano.log 2>&1
 Restart=on-failure
 RestartSec=5s
 
