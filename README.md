@@ -50,6 +50,7 @@ sudo service udev restart
 
 5. Open synthesia and make sure they are connected
 - Set Key light to "Finger-Based" channel
+- Uncheck all boxes under "Use this device for:" section
 
 6. Get Device names and add to `config.yaml`
 ```sh
