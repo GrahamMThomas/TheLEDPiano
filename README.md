@@ -49,7 +49,32 @@ sudo service udev restart
 5. Open synthesia and make sure they are connected
 - Set Key light to "Finger-Based" channel
 
-6. Configure to run on boot
+6. Get Device names and add to `config.yaml`
+```sh
+aconnect -l
+```
+
+Example Output:
+```
+client 0: 'System' [type=kernel]
+    0 'Timer           '
+    1 'Announce        '
+client 14: 'Midi Through' [type=kernel]
+    0 'Midi Through Port-0'
+client 20: 'Clavinova' [type=kernel,card=1]
+    0 'Clavinova MIDI 1'
+        Connecting To: 128:1
+        Connected From: 128:1
+client 128: 'rtpmidi raspberrypi' [type=user,pid=1459]
+    0 'Network         '
+    1 'Maelstrom       '
+        Connecting To: 20:0
+        Connected From: 20:0
+```
+
+Here your piano device name is `Clavinova MIDI 1` and synthesia is `Maelstrom`. Put these values into the config.yaml
+
+7. Configure to run on boot
 ```sh
 sudo cp pianoled.service /lib/systemd/system/
 sudo chmod 644 /lib/systemd/system/pianoled.service
@@ -57,6 +82,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable pianoled.service
 sudo reboot
 ```
+
+
 
 <!-- ROADMAP -->
 
