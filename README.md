@@ -30,7 +30,7 @@ git clone https://github.com/GrahamMThomas/TheLEDPiano.git
 2. Install required packages
 
 ```sh
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 3. Add midiusb.rules file
