@@ -2,9 +2,7 @@
 
 # The LED Piano &nbsp; 
 
-> "I Shorten Things" is a bit.ly clone I used to practice building a full stack application from the ground up.
-
-To access the app, go to https://app.ishortenthings.com:
+> "The LED Piano" is a project that allows for and LED strip to interactively assist your piano playing using the [Synthesia](https://synthesiagame.com/) 
 
 ## About The Project
 
